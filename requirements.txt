@@ -1,15 +1,13 @@
-# Core dependencies
+# Core dependencies (latest stable versions)
 langchain>=0.1.0
 langchain-openai>=0.0.5
-langchain-anthropic>=0.1.0
-langgraph>=0.0.20
+langchain-core>=0.1.0
 
-# OpenAI
+# OpenAI (latest)
 openai>=1.12.0
 
 # Audio processing
 pydub>=0.25.1
-elevenlabs>=0.2.0
 
 # Configuration
 python-dotenv>=1.0.0
@@ -21,3 +19,11 @@ rich>=13.0.0
 
 # Utilities
 requests>=2.31.0
+
+# Note: This project is designed to work in a virtual environment
+# to avoid conflicts with other packages (langflow, qianfan, etc.)
+#
+# Recommended installation:
+#   python -m venv venv
+#   source venv/bin/activate  # On Windows: venv\Scripts\activate
+#   pip install -r requirements.txt

@@ -54,18 +54,39 @@ The application generates 6 MP3 files:
 
 ## Installation
 
+### Quick Setup (Recommended)
+
 ```bash
 # Clone the repository
 git clone https://github.com/pranavjh/oxford-debate-agent.git
 cd oxford-debate-agent
 
+# Run setup script (creates virtual environment and installs dependencies)
+./setup.sh
+
+# Copy your OpenAI config
+cp /path/to/your/config.json config/secrets/config.json
+```
+
+### Manual Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/pranavjh/oxford-debate-agent.git
+cd oxford-debate-agent
+
+# Create and activate virtual environment (recommended to avoid dependency conflicts)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
 
 # Configure API keys
-# Copy your OpenAI config.json to config/secrets/
 cp /path/to/your/config.json config/secrets/config.json
 ```
+
+### Configuration
 
 The `config/secrets/config.json` file should contain:
 ```json
@@ -75,16 +96,28 @@ The `config/secrets/config.json` file should contain:
 }
 ```
 
-**Note**: The `config/secrets/` directory is gitignored to protect your API keys.
+**Important Notes:**
+- ⚠️ **Use a virtual environment** to avoid dependency conflicts with other Python packages
+- 🔒 The `config/secrets/` directory is gitignored to protect your API keys
+- ✅ The setup script automatically creates the virtual environment for you
 
 ## Usage
 
+**Important:** Always activate the virtual environment first:
+```bash
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+Then run the debate generator:
 ```bash
 # Run with default motion
 python src/main.py
 
 # Run with custom motion
 python src/main.py --motion "AI will replace human creativity"
+
+# See example motions
+python src/main.py list-motions
 ```
 
 ## Features
