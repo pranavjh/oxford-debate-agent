@@ -19,7 +19,10 @@ from debate_orchestrator import DebateOrchestrator
 # Load environment variables (optional, API key loaded from config/secrets/config.json)
 load_dotenv()
 
-app = typer.Typer()
+app = typer.Typer(
+    help="🎭 Oxford Debate Agent - Generate AI-powered debates with audio output",
+    add_completion=False
+)
 console = Console()
 
 
@@ -38,20 +41,18 @@ def check_config():
 
 
 @app.command()
-def generate_debate(
-    motion: Optional[str] = typer.Option(
-        None,
-        "--motion",
-        "-m",
-        help="The debate motion (e.g., 'AI will replace human creativity')"
+def generate(
+    motion: str = typer.Argument(
+        ...,
+        help="The debate motion"
     ),
-    output_dir: Optional[str] = typer.Option(
+    output_dir: str = typer.Option(
         "output",
         "--output",
         "-o",
         help="Output directory for audio files"
     ),
-    config_path: Optional[str] = typer.Option(
+    config_path: str = typer.Option(
         "config/config.yaml",
         "--config",
         "-c",
@@ -61,18 +62,15 @@ def generate_debate(
     """
     Generate an Oxford-style debate with audio output.
 
-    Example:
-        python main.py --motion "AI will benefit humanity more than harm it"
+    Examples:\n
+        python src/main.py generate "AI will benefit humanity"\n
+        python src/main.py generate "Trump's tariffs help the US economy" -o debates/\n
     """
 
     console.print("\n[bold cyan]🎭 Oxford Debate Agent[/bold cyan]\n")
 
     # Check for API configuration
     check_config()
-
-    # Use default motion if not provided
-    if not motion:
-        motion = os.getenv("DEFAULT_MOTION", "This house believes that artificial intelligence will do more good than harm")
 
     console.print(f"[yellow]Motion:[/yellow] {motion}\n")
 
@@ -118,9 +116,9 @@ def generate_debate(
 
 
 @app.command()
-def list_motions():
+def examples():
     """List example debate motions."""
-    console.print("\n[bold cyan]Example Debate Motions:[/bold cyan]\n")
+    console.print("\n[bold cyan]📋 Example Debate Motions:[/bold cyan]\n")
 
     motions = [
         "This house believes that artificial intelligence will do more good than harm",
@@ -131,12 +129,15 @@ def list_motions():
         "This house believes that universal basic income is necessary",
         "This house would ban genetic engineering of humans",
         "This house believes that space exploration is a waste of resources",
+        "Trump's tariffs are helping the US economy",
+        "Remote work is better than office work",
     ]
 
     for i, motion in enumerate(motions, 1):
-        console.print(f"  {i}. {motion}")
+        console.print(f"  {i}. [cyan]{motion}[/cyan]")
 
-    console.print()
+    console.print("\n[dim]Use any of these with:[/dim]")
+    console.print('  [dim]python src/main.py generate "your motion here"[/dim]\n')
 
 
 if __name__ == "__main__":

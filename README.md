@@ -110,14 +110,18 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 Then run the debate generator:
 ```bash
-# Run with default motion
-python src/main.py
+# Generate a debate (provide motion as argument)
+python src/main.py generate "AI will replace human creativity"
 
-# Run with custom motion
-python src/main.py --motion "AI will replace human creativity"
+# Generate with custom output directory
+python src/main.py generate "Trump's tariffs help the US economy" --output debates/
 
 # See example motions
-python src/main.py list-motions
+python src/main.py examples
+
+# Get help
+python src/main.py --help
+python src/main.py generate --help
 ```
 
 ## Features
