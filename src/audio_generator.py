@@ -59,16 +59,19 @@ class AudioGenerator:
             raise ValueError(f"Unsupported TTS provider: {self.tts_provider}")
 
     def _openai_tts(self, text: str, output_path: str, voice: str) -> str:
-        """Generate audio using OpenAI TTS."""
+        """Generate audio using OpenAI TTS with latest model."""
 
         # Get voice configuration
         voice_config = self.config['audio']['voices'][voice]
         voice_id = voice_config['voice_id']
         speed = voice_config.get('speed', 1.0)
 
+        # Get TTS model from config (defaults to tts-1-hd)
+        tts_model = self.config.get('models', {}).get('tts', 'tts-1-hd')
+
         # Generate audio
         response = self.client.audio.speech.create(
-            model="tts-1-hd",  # or tts-1 for faster/cheaper
+            model=tts_model,  # Use configured model (tts-1-hd for high quality)
             voice=voice_id,
             input=text,
             speed=speed

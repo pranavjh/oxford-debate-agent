@@ -62,11 +62,20 @@ cd oxford-debate-agent
 # Install dependencies
 pip install -r requirements.txt
 
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your API keys
+# Configure API keys
+# Copy your OpenAI config.json to config/secrets/
+cp /path/to/your/config.json config/secrets/config.json
 ```
+
+The `config/secrets/config.json` file should contain:
+```json
+{
+  "OPENAI_API_KEY": "sk-...",
+  "OPENAI_API_BASE": "https://api.openai.com/v1/"
+}
+```
+
+**Note**: The `config/secrets/` directory is gitignored to protect your API keys.
 
 ## Usage
 
@@ -88,10 +97,11 @@ python src/main.py --motion "AI will replace human creativity"
 
 ## Technology Stack
 
-- **LLM Framework**: LangChain / LangGraph for agent orchestration
-- **LLM**: OpenAI GPT-4 / Anthropic Claude
-- **TTS**: OpenAI TTS API / ElevenLabs
+- **LLM Framework**: LangChain for agent orchestration
+- **LLM**: OpenAI GPT-4o (latest model)
+- **TTS**: OpenAI TTS-1-HD (high quality audio)
 - **Audio**: pydub for audio processing
+- **CLI**: Typer with Rich for beautiful terminal interface
 
 ## Roadmap
 

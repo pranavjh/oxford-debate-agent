@@ -5,22 +5,30 @@ debate:
   num_rounds: 3  # Opening, Rebuttal, Closing
   speech_time_limit: 120  # seconds
 
+# OpenAI Models (Latest)
+models:
+  debate_llm: "gpt-4o"  # Latest GPT-4o for debate generation
+  tts: "tts-1-hd"  # High-quality text-to-speech
+
 agents:
   proposition:
     name: "Proposition Agent"
     role: "Argue in favor of the motion"
+    model: "gpt-4o"
     temperature: 0.7
     max_tokens: 800
 
   opposition:
     name: "Opposition Agent"
     role: "Argue against the motion"
+    model: "gpt-4o"
     temperature: 0.7
     max_tokens: 800
 
   moderator:
     name: "Moderator"
     role: "Introduce the debate and provide context"
+    model: "gpt-4o"
     temperature: 0.5
     max_tokens: 300
 

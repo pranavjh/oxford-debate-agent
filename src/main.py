@@ -16,11 +16,25 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from debate_orchestrator import DebateOrchestrator
 
-# Load environment variables
+# Load environment variables (optional, API key loaded from config/secrets/config.json)
 load_dotenv()
 
 app = typer.Typer()
 console = Console()
+
+
+def check_config():
+    """Verify that API configuration exists."""
+    config_path = Path("config/secrets/config.json")
+    if not config_path.exists():
+        console.print("[bold red]Error:[/bold red] API configuration not found!")
+        console.print(f"\nPlease copy your OpenAI config.json to: [yellow]{config_path}[/yellow]")
+        console.print("\nThe file should contain your OpenAI API key:")
+        console.print("  {")
+        console.print('    "OPENAI_API_KEY": "sk-...",')
+        console.print('    "OPENAI_API_BASE": "https://api.openai.com/v1/"')
+        console.print("  }")
+        raise typer.Exit(1)
 
 
 @app.command()
@@ -53,13 +67,16 @@ def generate_debate(
 
     console.print("\n[bold cyan]🎭 Oxford Debate Agent[/bold cyan]\n")
 
+    # Check for API configuration
+    check_config()
+
     # Use default motion if not provided
     if not motion:
         motion = os.getenv("DEFAULT_MOTION", "This house believes that artificial intelligence will do more good than harm")
 
     console.print(f"[yellow]Motion:[/yellow] {motion}\n")
 
-    # Initialize orchestrator
+    # Initialize orchestrator (will load API key from config/secrets/config.json)
     try:
         orchestrator = DebateOrchestrator(
             motion=motion,

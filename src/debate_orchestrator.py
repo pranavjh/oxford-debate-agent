@@ -4,6 +4,8 @@ Debate Orchestrator
 Coordinates the flow of the Oxford debate, managing agents and state.
 """
 
+import json
+import os
 from pathlib import Path
 from typing import Dict, List
 
@@ -27,6 +29,9 @@ class DebateOrchestrator:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Load OpenAI API key from secrets
+        self._load_api_key()
+
         # Load configuration
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
@@ -35,7 +40,7 @@ class DebateOrchestrator:
         with open('config/prompts.yaml', 'r') as f:
             self.prompts = yaml.safe_load(f)
 
-        # Initialize LLM
+        # Initialize LLM with latest model
         self.llm = ChatOpenAI(
             model=self.config['agents']['proposition']['model'],
             temperature=self.config['agents']['proposition']['temperature']
@@ -43,6 +48,32 @@ class DebateOrchestrator:
 
         # Debate state
         self.debate_content: Dict[str, str] = {}
+
+    def _load_api_key(self):
+        """Load OpenAI API key from config/secrets/config.json."""
+        secrets_path = Path("config/secrets/config.json")
+
+        if not secrets_path.exists():
+            raise FileNotFoundError(
+                f"API key configuration not found at {secrets_path}. "
+                "Please copy your OpenAI config.json to config/secrets/config.json"
+            )
+
+        with open(secrets_path, 'r') as f:
+            secrets = json.load(f)
+
+        # Set API key in environment (supports multiple key formats)
+        api_key = secrets.get('OPENAI_API_KEY') or secrets.get('openai_api_key') or secrets.get('API_KEY')
+
+        if not api_key:
+            raise ValueError("No OpenAI API key found in config/secrets/config.json")
+
+        os.environ['OPENAI_API_KEY'] = api_key
+
+        # Optionally set API base URL if specified
+        api_base = secrets.get('OPENAI_API_BASE') or secrets.get('openai_api_base')
+        if api_base:
+            os.environ['OPENAI_API_BASE'] = api_base
 
     def generate_debate(self) -> Dict[str, str]:
         """

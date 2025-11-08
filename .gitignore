@@ -37,6 +37,11 @@ ENV/
 .env
 .env.local
 
+# API Keys and Secrets
+config/secrets/config.json
+config/secrets/*.json
+!config/secrets/.gitkeep
+
 # Output files (except .gitkeep)
 output/*.mp3
 output/*.wav
