@@ -1,0 +1,57 @@
+# Oxford Debate Agent Configuration
+
+debate:
+  format: oxford
+  num_rounds: 3  # Opening, Rebuttal, Closing
+  speech_time_limit: 120  # seconds
+
+agents:
+  proposition:
+    name: "Proposition Agent"
+    role: "Argue in favor of the motion"
+    temperature: 0.7
+    max_tokens: 800
+
+  opposition:
+    name: "Opposition Agent"
+    role: "Argue against the motion"
+    temperature: 0.7
+    max_tokens: 800
+
+  moderator:
+    name: "Moderator"
+    role: "Introduce the debate and provide context"
+    temperature: 0.5
+    max_tokens: 300
+
+speech_styles:
+  formal: true
+  use_rhetoric: true
+  include_examples: true
+  citation_style: "academic"
+
+audio:
+  sample_rate: 44100
+  bit_rate: "192k"
+  format: "mp3"
+  normalize: true
+
+  voices:
+    proposition:
+      provider: "openai"
+      voice_id: "alloy"
+      speed: 1.0
+
+    opposition:
+      provider: "openai"
+      voice_id: "onyx"
+      speed: 1.0
+
+output:
+  directory: "output"
+  filename_pattern: "{order:02d}_{side}_{stage}.mp3"
+  # Example: 01_proposition_opening.mp3
+
+  metadata:
+    include_transcript: true
+    include_timestamps: true

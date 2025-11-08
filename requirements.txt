@@ -1,0 +1,23 @@
+# Core dependencies
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-anthropic>=0.1.0
+langgraph>=0.0.20
+
+# OpenAI
+openai>=1.12.0
+
+# Audio processing
+pydub>=0.25.1
+elevenlabs>=0.2.0
+
+# Configuration
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# CLI
+typer>=0.9.0
+rich>=13.0.0
+
+# Utilities
+requests>=2.31.0
